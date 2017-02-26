@@ -1,0 +1,3 @@
+package: github.com/kazuma-ickw/go-youtube
+import:
+- package: main
