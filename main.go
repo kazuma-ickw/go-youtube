@@ -28,6 +28,7 @@ var (
 )
 
 func main() {
+	flag.Parse()
 
 	var config Config
 	_, err := toml.DecodeFile("config.toml", &config)
