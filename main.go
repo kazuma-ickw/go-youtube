@@ -22,6 +22,12 @@ type APIConfig struct {
 	Key string `toml:"key"`
 }
 
+// Video is a video object
+type Video struct {
+	Title string
+	ID    string
+}
+
 var (
 	query      = flag.String("query", "Google", "Search term")
 	maxResults = flag.Int64("max-results", 25, "Max YouTube results")
@@ -33,7 +39,6 @@ func main() {
 	var config Config
 	_, err := toml.DecodeFile("config.toml", &config)
 
-	fmt.Println("Hello World")
 	client := &http.Client{
 		Transport: &transport.APIKey{Key: config.API.Key},
 	}
@@ -52,34 +57,27 @@ func main() {
 		log.Fatalf("Error making API call to list channels: %v", err.Error())
 	}
 
-	// Group video, channel, and playlist results in separate lists.
-	videos := make(map[string]string)
-	channels := make(map[string]string)
-	playlists := make(map[string]string)
+	var videos []Video
 
-	// Iterate through each item and add it to the correct list.
 	for _, item := range response.Items {
 		switch item.Id.Kind {
 		case "youtube#video":
-			videos[item.Id.VideoId] = item.Snippet.Title
-		case "youtube#channel":
-			channels[item.Id.ChannelId] = item.Snippet.Title
-		case "youtube#playlist":
-			playlists[item.Id.PlaylistId] = item.Snippet.Title
+			videos = append(videos, Video{
+				Title: item.Snippet.Title,
+				ID:    item.Id.VideoId,
+			})
 		}
 	}
 
 	printIDs("Videos", videos)
-	printIDs("Channels", channels)
-	printIDs("Playlists", playlists)
 
 	log.Fatal(response)
 }
 
-func printIDs(sectionName string, matches map[string]string) {
+func printIDs(sectionName string, videos []Video) {
 	fmt.Printf("%v:\n", sectionName)
-	for id, title := range matches {
-		fmt.Printf("[%v] %v\n", id, title)
+	for _, video := range videos {
+		fmt.Printf("[%v] %v だよ\n", video.ID, video.Title)
 	}
 	fmt.Printf("\n\n")
 }
