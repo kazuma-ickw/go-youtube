@@ -24,8 +24,9 @@ type APIConfig struct {
 
 // Video is a video object
 type Video struct {
-	Title string
-	ID    string
+	Title        string
+	ID           string
+	ThumbnailURL string
 }
 
 var (
@@ -63,8 +64,9 @@ func main() {
 		switch item.Id.Kind {
 		case "youtube#video":
 			videos = append(videos, Video{
-				Title: item.Snippet.Title,
-				ID:    item.Id.VideoId,
+				Title:        item.Snippet.Title,
+				ID:           item.Id.VideoId,
+				ThumbnailURL: item.Snippet.Thumbnails.Default.Url,
 			})
 		}
 	}
@@ -77,7 +79,7 @@ func main() {
 func printIDs(sectionName string, videos []Video) {
 	fmt.Printf("%v:\n", sectionName)
 	for _, video := range videos {
-		fmt.Printf("[%v] %v だよ\n", video.ID, video.Title)
+		fmt.Printf("[%v] %v だよ %v \n", video.ID, video.Title, video.ThumbnailURL)
 	}
 	fmt.Printf("\n\n")
 }
