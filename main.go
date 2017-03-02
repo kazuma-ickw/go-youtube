@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/BurntSushi/toml"
 
@@ -27,6 +28,7 @@ type Video struct {
 	Title        string
 	ID           string
 	ThumbnailURL string
+	PublishedAt  time.Time
 }
 
 var (
@@ -63,10 +65,12 @@ func main() {
 	for _, item := range response.Items {
 		switch item.Id.Kind {
 		case "youtube#video":
+			t, _ := time.Parse(time.RFC3339, item.Snippet.PublishedAt)
 			videos = append(videos, Video{
 				Title:        item.Snippet.Title,
 				ID:           item.Id.VideoId,
 				ThumbnailURL: item.Snippet.Thumbnails.Default.Url,
+				PublishedAt:  t,
 			})
 		}
 	}
@@ -79,7 +83,6 @@ func main() {
 func printIDs(sectionName string, videos []Video) {
 	fmt.Printf("%v:\n", sectionName)
 	for _, video := range videos {
-		fmt.Printf("[%v] %v だよ %v \n", video.ID, video.Title, video.ThumbnailURL)
+		fmt.Printf("[%v] %v だよ %v %v \n", video.ID, video.Title, video.ThumbnailURL, video.PublishedAt.Format("2006-01-02"))
 	}
-	fmt.Printf("\n\n")
 }
