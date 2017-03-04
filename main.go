@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+	"net/http"
 
 	"github.com/kazuma-ickw/go-youtube/youtube"
 )
@@ -14,10 +16,14 @@ var (
 
 func main() {
 	flag.Parse()
-	videos := youtube.Search(query, maxResults)
-	fmt.Println("return")
 
-	for _, video := range videos {
-		fmt.Printf("%#v", video)
-	}
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// fmt.Printf("%#v", r)
+		videos := youtube.Search(query, maxResults)
+		for _, video := range videos {
+			fmt.Printf("%#v", video)
+		}
+		fmt.Fprint(w, "hello world")
+	})
+	log.Fatal(http.ListenAndServe(":5000", nil))
 }
