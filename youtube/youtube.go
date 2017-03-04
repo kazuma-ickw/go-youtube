@@ -2,7 +2,6 @@ package youtube
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -37,7 +36,7 @@ var (
 )
 
 // Search Video
-func Search() {
+func Search() []Video {
 	flag.Parse()
 
 	var config Config
@@ -76,14 +75,5 @@ func Search() {
 		}
 	}
 
-	printIDs("Videos", videos)
-
-	log.Fatal(response)
-}
-
-func printIDs(sectionName string, videos []Video) {
-	fmt.Printf("%v:\n", sectionName)
-	for _, video := range videos {
-		fmt.Printf("[%v] %v だよ %v %v \n", video.ID, video.Title, video.ThumbnailURL, video.PublishedAt.Format("2006-01-02"))
-	}
+	return videos
 }
