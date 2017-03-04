@@ -1,7 +1,6 @@
 package youtube
 
 import (
-	"flag"
 	"log"
 	"net/http"
 	"time"
@@ -30,14 +29,8 @@ type Video struct {
 	PublishedAt  time.Time
 }
 
-var (
-	query      = flag.String("query", "Google", "Search term")
-	maxResults = flag.Int64("max-results", 25, "Max YouTube results")
-)
-
 // Search Video
-func Search() []Video {
-	flag.Parse()
+func Search(query *string, maxResults *int64) []Video {
 
 	var config Config
 	_, err := toml.DecodeFile("config.toml", &config)
