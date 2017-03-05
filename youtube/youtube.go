@@ -30,7 +30,7 @@ type Video struct {
 }
 
 // Search Video
-func Search(query *string, maxResults *int64) []Video {
+func Search(query string, maxResults *int64) []Video {
 
 	var config Config
 	_, err := toml.DecodeFile("config.toml", &config)
@@ -44,7 +44,7 @@ func Search(query *string, maxResults *int64) []Video {
 		log.Fatalf("Error creating new YouTube client: %v", err)
 	}
 	call := service.Search.List("id,snippet").
-		Q(*query).
+		Q(query).
 		MaxResults(*maxResults)
 
 	response, err := call.Do()

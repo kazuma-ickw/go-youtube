@@ -19,7 +19,16 @@ func main() {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// fmt.Printf("%#v", r)
-		videos := youtube.Search(query, maxResults)
+		fmt.Printf("%#v", r.URL.Query())
+		params := r.URL.Query()
+		q := params.Get("q")
+		fmt.Printf("%#v", q)
+
+		if len(q) == 0 {
+			fmt.Printf("query not found")
+		}
+
+		videos := youtube.Search(q, maxResults)
 		for _, video := range videos {
 			fmt.Printf("%#v", video)
 		}
