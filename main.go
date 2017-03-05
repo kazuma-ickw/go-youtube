@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -20,6 +21,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// fmt.Printf("%#v", r)
 		fmt.Printf("%#v", r.URL.Query())
+		fmt.Printf("%#v", r.URL.RequestURI())
 		params := r.URL.Query()
 		q := params.Get("q")
 		fmt.Printf("%#v", q)
@@ -29,10 +31,9 @@ func main() {
 		}
 
 		videos := youtube.Search(q, maxResults)
-		for _, video := range videos {
-			fmt.Printf("%#v", video)
-		}
-		fmt.Fprint(w, "hello world")
+		jsonData, _ := json.Marshal(videos)
+		w.Header().Set("Content-Type", "text/json")
+		w.Write(jsonData)
 	})
 	log.Fatal(http.ListenAndServe(":5000", nil))
 }
