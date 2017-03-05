@@ -23,10 +23,10 @@ type APIConfig struct {
 
 // Video is a video object
 type Video struct {
-	Title        string
-	ID           string
-	ThumbnailURL string
-	PublishedAt  time.Time
+	Title        string    `json:"title"`
+	ID           string    `json:"id"`
+	ThumbnailURL string    `json:"thumbnailUrl"`
+	PublishedAt  time.Time `json:"publishedAt"`
 }
 
 // Search Video
