@@ -1,6 +1,7 @@
 package youtube
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -25,6 +26,7 @@ type APIConfig struct {
 type Video struct {
 	Title        string    `json:"title"`
 	ID           string    `json:"id"`
+	URL          string    `json:"url"`
 	ThumbnailURL string    `json:"thumbnailUrl"`
 	PublishedAt  time.Time `json:"publishedAt"`
 }
@@ -62,6 +64,7 @@ func Search(query string, maxResults *int64) []Video {
 			videos = append(videos, Video{
 				Title:        item.Snippet.Title,
 				ID:           item.Id.VideoId,
+				URL:          fmt.Sprintf("https://www.youtube.com/watch?v=%v", item.Id.VideoId),
 				ThumbnailURL: item.Snippet.Thumbnails.Default.Url,
 				PublishedAt:  t,
 			})
