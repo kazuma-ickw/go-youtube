@@ -32,7 +32,7 @@ type Video struct {
 }
 
 // Search Video
-func Search(query string, maxResults *int64) []Video {
+func Search(query string, maxResults int64) []Video {
 
 	var config Config
 	_, err := toml.DecodeFile("config.toml", &config)
@@ -47,7 +47,7 @@ func Search(query string, maxResults *int64) []Video {
 	}
 	call := service.Search.List("id,snippet").
 		Q(query).
-		MaxResults(*maxResults)
+		MaxResults(maxResults)
 
 	response, err := call.Do()
 	if err != nil {

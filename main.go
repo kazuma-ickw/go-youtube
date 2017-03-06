@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/kazuma-ickw/go-youtube/youtube"
 )
@@ -24,13 +25,16 @@ func main() {
 		fmt.Printf("%#v", r.URL.RequestURI())
 		params := r.URL.Query()
 		q := params.Get("q")
-		fmt.Printf("%#v", q)
+		max, _ := strconv.ParseInt(params.Get("max"), 10, 64)
+		if max == 0 {
+			max = 25
+		}
 
 		if len(q) == 0 {
 			fmt.Printf("query not found")
 		}
 
-		videos := youtube.Search(q, maxResults)
+		videos := youtube.Search(q, max)
 		jsonData, _ := json.Marshal(videos)
 		w.Header().Set("Content-Type", "text/json")
 		w.Write(jsonData)
