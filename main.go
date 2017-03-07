@@ -25,7 +25,7 @@ func main() {
 		params := r.URL.Query()
 		q := params.Get("q")
 		max, _ := strconv.ParseInt(params.Get("max"), 10, 64)
-		if max == 0 {
+		if max == 0 || max > 25 {
 			max = 25
 		}
 
