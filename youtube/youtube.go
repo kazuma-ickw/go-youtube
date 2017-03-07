@@ -47,7 +47,7 @@ func Search(query string, maxResults int64) []Video {
 	}
 	call := service.Search.List("id,snippet").
 		Q(query).
-		MaxResults(maxResults)
+		MaxResults(maxResults + 1)
 
 	response, err := call.Do()
 	if err != nil {
