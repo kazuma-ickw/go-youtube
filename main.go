@@ -20,9 +20,8 @@ func main() {
 	flag.Parse()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// fmt.Printf("%#v", r)
-		fmt.Printf("%#v", r.URL.Query())
-		fmt.Printf("%#v", r.URL.RequestURI())
+		fmt.Printf("%#v\n", r.URL.Query())
+		fmt.Printf("%#v\n", r.URL.RequestURI())
 		params := r.URL.Query()
 		q := params.Get("q")
 		max, _ := strconv.ParseInt(params.Get("max"), 10, 64)
